@@ -1,0 +1,15 @@
+\\ simple comment
+\
+    double comment
+\
+proc hello(hello):
+    println(hello)
+end
+func ab(a)::wq
+    b = a** \\ b = a*a
+    return a
+end
+func main()
+    print("code begin this!")
+    hello( ab(10) ) \\ output 100
+end
