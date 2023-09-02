@@ -2,14 +2,25 @@
 \
     double comment
 \
-proc hello(hello):
-    println(hello)
+proc hello(text):
+    println(text)
 end
-func ab(a)::wq
+func ab1(a):
     b = a** \\ b = a*a
     return a
 end
-func main()
+proc ab2:
+    a = 10
+    proc:
+        b = 20
+        a = b
+    end
+    \\ b deleted
+    println(a) \\ a = 20
+end
+func main:
     print("code begin this!")
-    hello( ab(10) ) \\ output 100
+    hello( ab1(10) ) \\ output 100
+    ab2()            \\ output 20
+    \\ next return 0
 end

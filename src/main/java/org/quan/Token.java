@@ -1,8 +1,8 @@
 package org.quan;
 class Token {
     public String word;
-    public String type;
-    public Token(String word, String type) {
+    public TokenTypes type;
+    public Token(String word, TokenTypes type) {
         this.word = word;
         this.type = type;
     }
