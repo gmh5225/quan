@@ -16,20 +16,28 @@ public enum TokenTypes {
         singleLogicalOperator,
         doubleLogicalOperator,
 // Parser types
-    // func & proc & codeBlock | block & parameter
-        procedureStart,
-        procedureName,
-        localProcedure,
-        localProcedureStart,
-        procedure,
-        functionStart,
-        functionName,
-        localFunction,
-        localFunctionStart,
-        function,
-        codeBlockStart,
-        codeBlockEnd,
-        blockStart,
-        blockEnd,
-        parameter
+    // proc & func & codeBlock | block
+        // procedure
+            procedureBegin,
+            procedureName,
+            localProcedure,
+            localProcedureBegin,
+            procedure,
+        // function
+            functionBegin,
+            functionName,
+            localFunction,
+            localFunctionBegin,
+            function,
+        // codeBlock
+            codeBlockBegin,
+            codeBlockEnd,
+            codeBlockName,
+            codeBlockCall,
+        // block
+            blockBegin,
+            blockEnd,
+    // assignment
+    // return
+    // parameter
 }

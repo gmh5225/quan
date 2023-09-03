@@ -23,7 +23,7 @@ public class Tokenizer {
                 // + save needed spaces
                 if (c == '\u001F' && tokens.isEmpty()) counter++; else
                 {
-                    if (c == '\u001F')
+                    if (c == '\u001F' && tokens.get(tokens.size()-1).type != TokenTypes.endline)
                         addToken(c+"", TokenTypes.endline);
                     else
                     if (c == '+' || c == '-' || c == '*' || c == '/' || c == '=' || c == '%')
@@ -32,13 +32,16 @@ public class Tokenizer {
                     if (c == '?' || c == '!')
                         addToken(c+"", TokenTypes.singleLogicalOperator);
                     else
-                    if (c == '(' || c == '[')
-                        addToken(c+"", TokenTypes.blockStart);
+                    if (c == '(' || c == '['|| c == '{')
+                        addToken(c+"", TokenTypes.blockBegin);
                     else
-                    if (c == ')' || c == ']')
+                    if (c == ')' || c == ']'|| c == '}')
                         addToken(c+"", TokenTypes.blockEnd);
                     else
-                    if (c != ' ' && c != '\t')
+                    if (c == ':')
+                        addToken(c+"", TokenTypes.codeBlockBegin);
+                    else
+                    if (c != ' ' && c != '\t' && c != '\u001F')
                         addToken(c+"", TokenTypes.singleChar);
                     counter++;
                 }
@@ -48,7 +51,8 @@ public class Tokenizer {
         System.out.println("quan: Tokenizer: Tokens size: "+tokens.size());
     }
     private boolean addToken(String token, TokenTypes type) {
-        if (!token.isEmpty() /*&& !type.isEmpty()*/) {
+        if (!token.isEmpty()) {
+            if (type == TokenTypes.word && token.equals("end")) type = TokenTypes.codeBlockEnd;
             tokens.add(new Token(token, type));
             return true;
         }

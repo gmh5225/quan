@@ -9,7 +9,7 @@ func ab1(a):
     b = a** \\ b = a*a
     return a
 end
-proc ab2:
+ab2: \\ proc
     a = 10
     proc:
         b = 20

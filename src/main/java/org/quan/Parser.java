@@ -5,51 +5,41 @@ public class Parser {
     public Parser(ArrayList<Token> tokens) {
         this.tokens = tokens;
 
-        parseProcedureAndFunctionStart();      // proc & func
-        parseCodeBlockStartAndEnd();           // : & end
-        parseLocalProcedureAndFunctionStart(); // local proc & func (look at :)
+        parseProcedureAndFunctionBegin();      // proc & func
+        parseLocalProcedureAndFunctionBegin(); // local proc & func (look at :)
         parseProcedureAndFunctionName();       // proc & func names
+        parseCodeBlockName();                  // next ->> proc or func
 
-        // 3: proc, func, codeBlockStart (next proc or func)
+        // 3: proc, func, codeBlockStart (next ->> proc or func)
 
-
+        parseCodeBlockCall();
 
         for (Token token : tokens) {
             System.out.println(token.type.toString()+": "+token.word);
         }
         //
     }
-    public void parseProcedureAndFunctionStart() {
+    public void parseProcedureAndFunctionBegin() {
         for (Token token : tokens) {
             if (token.type == TokenTypes.word) {
                 if (token.word.equals("proc"))
-                    token.type = TokenTypes.procedureStart;
+                    token.type = TokenTypes.procedureBegin;
                 else
                 if (token.word.equals("func"))
-                    token.type = TokenTypes.functionStart;
+                    token.type = TokenTypes.functionBegin;
             }
         }
         //
     }
-    public void parseCodeBlockStartAndEnd() {
-        for (Token token : tokens) {
-            if (token.type == TokenTypes.singleChar && token.word.equals(":"))
-                token.type = TokenTypes.codeBlockStart;
-            else
-            if (token.type == TokenTypes.word && token.word.equals("end"))
-                token.type = TokenTypes.codeBlockEnd;
-        }
-        //
-    }
-    public void parseLocalProcedureAndFunctionStart() {
+    public void parseLocalProcedureAndFunctionBegin() {
         for (int i = 0; i+1 < tokens.size(); i++) {
             Token currentToken = tokens.get(i);
-            if (tokens.get(i+1).type == TokenTypes.codeBlockStart) {
-                if (currentToken.type == TokenTypes.procedureStart)
-                    currentToken.type = TokenTypes.localProcedureStart;
+            if (tokens.get(i+1).type == TokenTypes.codeBlockBegin) {
+                if (currentToken.type == TokenTypes.procedureBegin)
+                    currentToken.type = TokenTypes.localProcedureBegin;
                 else
-                if (currentToken.type == TokenTypes.functionStart)
-                    currentToken.type = TokenTypes.localProcedureStart;
+                if (currentToken.type == TokenTypes.functionBegin)
+                    currentToken.type = TokenTypes.localFunctionBegin;
             }
         }
         //
@@ -60,12 +50,28 @@ public class Parser {
             TokenTypes currentTokenType = tokens.get(i).type;
             Token nextToken = tokens.get(i+1);
             if (nextToken.type == TokenTypes.word) {
-                if (currentTokenType == TokenTypes.procedureStart)
+                if (currentTokenType == TokenTypes.procedureBegin)
                     nextToken.type = TokenTypes.procedureName;
                 else
-                if (currentTokenType == TokenTypes.functionStart)
+                if (currentTokenType == TokenTypes.functionBegin)
                     nextToken.type = TokenTypes.functionName;
             }
+        }
+        //
+    }
+    public void parseCodeBlockName() {
+        for (int i = 0; i+1 < tokens.size(); i++) {
+            Token currentToken = tokens.get(i);
+            if (tokens.get(i+1).type == TokenTypes.codeBlockBegin && currentToken.type == TokenTypes.word)
+                currentToken.type = TokenTypes.codeBlockName;
+        }
+        //
+    }
+    public void parseCodeBlockCall() {
+        for (int i = 0; i+1 < tokens.size(); i++) {
+            Token currentToken = tokens.get(i);
+            if (tokens.get(i+1).type == TokenTypes.blockBegin && currentToken.type == TokenTypes.word)
+                currentToken.type = TokenTypes.codeBlockCall;
         }
         //
     }
