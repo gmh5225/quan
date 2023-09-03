@@ -1,21 +1,35 @@
 package org.quan;
 public enum TokenTypes {
-    // Tokenizer types
-    word,
-    number,
-    floatNumber,
-    singleQuote,
-    doubleQuote,
-    singleChar,
-    space,
-    endline,
-    mathOperator,
-    logicalOperator,
-    // Parser types
-    procedure,
-    procedureName,
-    function,
-    functionName,
-    codeBlock, // next func or proc
-    parameter  // func or proc or codeBlock parameter
+// Tokenizer types
+    // basic
+        word,
+        number,
+        floatNumber,
+        singleChar,
+        endline,
+    // quote
+        singleQuote,
+        doubleQuote,
+    // operator
+        singleMathOperator,
+        doubleMathOperator,
+        singleLogicalOperator,
+        doubleLogicalOperator,
+// Parser types
+    // func & proc & codeBlock | block & parameter
+        procedureStart,
+        procedureName,
+        localProcedure,
+        localProcedureStart,
+        procedure,
+        functionStart,
+        functionName,
+        localFunction,
+        localFunctionStart,
+        function,
+        codeBlockStart,
+        codeBlockEnd,
+        blockStart,
+        blockEnd,
+        parameter
 }

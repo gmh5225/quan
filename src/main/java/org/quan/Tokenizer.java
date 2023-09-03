@@ -17,18 +17,29 @@ public class Tokenizer {
             if ( !addToken(getFloatNumber(), TokenTypes.floatNumber) )
             if ( !addToken(getNumber(), TokenTypes.number) )
             if ( !addToken(getWord(), TokenTypes.word) )
-            if ( !addToken(getLogicalOperator(), TokenTypes.logicalOperator) )
-            if ( !addToken(getMathOperator(), TokenTypes.mathOperator) ) {
+            if ( !addToken(getLogicalOperator(), TokenTypes.doubleLogicalOperator) )
+            if ( !addToken(getMathOperator(), TokenTypes.doubleMathOperator) ) {
                 char c = input.charAt(counter);
                 // + save needed spaces
                 if (c == '\u001F' && tokens.isEmpty()) counter++; else
                 {
-                    if (c == '\u001F') addToken(c+"", TokenTypes.endline); else
-                    if ((c == ' ' || c == '\t') && counter > 1 && counter+1 < inputLength) {
-                        if ( Character.isLetter(input.charAt(counter-1)) && Character.isLetter(input.charAt(counter+1)) )
-                            addToken(c + "", TokenTypes.space);
-                    }
-                    else addToken(c+"", TokenTypes.singleChar);
+                    if (c == '\u001F')
+                        addToken(c+"", TokenTypes.endline);
+                    else
+                    if (c == '+' || c == '-' || c == '*' || c == '/' || c == '=' || c == '%')
+                        addToken(c+"", TokenTypes.singleMathOperator);
+                    else
+                    if (c == '?' || c == '!')
+                        addToken(c+"", TokenTypes.singleLogicalOperator);
+                    else
+                    if (c == '(' || c == '[')
+                        addToken(c+"", TokenTypes.blockStart);
+                    else
+                    if (c == ')' || c == ']')
+                        addToken(c+"", TokenTypes.blockEnd);
+                    else
+                    if (c != ' ' && c != '\t')
+                        addToken(c+"", TokenTypes.singleChar);
                     counter++;
                 }
             }
@@ -69,15 +80,14 @@ public class Tokenizer {
         return false;
     }
     private String getSingleQuotes() { // delete comments
-        char currentChar = input.charAt(counter);
-        if (currentChar == '\'') {
+        if (input.charAt(counter) == '\'') {
             if (counter+1 >= inputLength) new Error("quan: Tokenizer: Single quote was not closed at the end");
 
             StringBuilder result = new StringBuilder();
             boolean openSingleComment = false;
 
             while (counter < inputLength) {
-                currentChar = input.charAt(counter);
+                char currentChar = input.charAt(counter);
                 result.append(currentChar);
                 if (currentChar == '\'') {
                     if (openSingleComment) {
@@ -92,15 +102,14 @@ public class Tokenizer {
         return "";
     }
     private String getDoubleQuotes() { // delete comments
-        char currentChar = input.charAt(counter);
-        if (currentChar == '\"') {
+        if (input.charAt(counter) == '\"') {
             if (counter+1 >= inputLength) new Error("quan: Tokenizer: Double quote was not closed at the end");
 
             StringBuilder result = new StringBuilder();
             boolean openDoubleComment = false;
 
             while (counter < inputLength) {
-                currentChar = input.charAt(counter);
+                char currentChar = input.charAt(counter);
                 result.append(currentChar);
                 if (currentChar == '\"') {
                     if (openDoubleComment) {
@@ -141,15 +150,15 @@ public class Tokenizer {
     }
     private String getNumber() {
         StringBuilder result = new StringBuilder();
+
         while (counter < inputLength) {
             char currentChar = input.charAt(counter);
-            char nextChar = (counter+1 < inputLength) ? input.charAt(counter+1) : '\0';
-
             if (Character.isDigit(currentChar)) {
                 result.append(currentChar);
                 counter++;
             } else break;
         }
+
         return result.toString();
     }
     private String getWord() {
