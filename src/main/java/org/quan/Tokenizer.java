@@ -1,4 +1,7 @@
 package org.quan;
+import org.quan.log.Log;
+import org.quan.log.LogTypes;
+
 import java.util.ArrayList;
 public class Tokenizer {
     ArrayList<Token> tokens = new ArrayList<>();
@@ -20,29 +23,32 @@ public class Tokenizer {
             if ( !addToken(getLogicalOperator(), TokenTypes.doubleLogicalOperator) )
             if ( !addToken(getMathOperator(), TokenTypes.doubleMathOperator) ) {
                 char c = input.charAt(counter);
-                // + save needed spaces
+                //
                 if (c == '\u001F' && tokens.isEmpty()) counter++; else
                 {
                     if (c == '\u001F' && tokens.get(tokens.size()-1).type != TokenTypes.endline)
-                        addToken(c+"", TokenTypes.endline);
+                        addToken(String.valueOf(c), TokenTypes.endline);
                     else
                     if (c == '+' || c == '-' || c == '*' || c == '/' || c == '=' || c == '%')
-                        addToken(c+"", TokenTypes.singleMathOperator);
+                        addToken(String.valueOf(c), TokenTypes.singleMathOperator);
                     else
                     if (c == '?' || c == '!')
-                        addToken(c+"", TokenTypes.singleLogicalOperator);
+                        addToken(String.valueOf(c), TokenTypes.singleLogicalOperator);
                     else
-                    if (c == '(' || c == '['|| c == '{')
-                        addToken(c+"", TokenTypes.blockBegin);
+                    if (c == '(')
+                        addToken(String.valueOf(c), TokenTypes.parameterBlockBegin);
                     else
-                    if (c == ')' || c == ']'|| c == '}')
-                        addToken(c+"", TokenTypes.blockEnd);
+                    if (c == ')')
+                        addToken(String.valueOf(c), TokenTypes.parameterBlockEnd);
+                    else
+                    if (c == '['|| c == '{') // TO:DO:
+                        addToken(String.valueOf(c), TokenTypes.blockBegin);
+                    else
+                    if (c == ']'|| c == '}') // TO:DO:
+                        addToken(String.valueOf(c), TokenTypes.blockEnd);
                     else
                     if (c == ':')
-                        addToken(c+"", TokenTypes.codeBlockBegin);
-                    else
-                    if (c != ' ' && c != '\t' && c != '\u001F')
-                        addToken(c+"", TokenTypes.singleChar);
+                        addToken(String.valueOf(c), TokenTypes.codeBlockBegin);
                     counter++;
                 }
             }
@@ -52,7 +58,10 @@ public class Tokenizer {
     }
     private boolean addToken(String token, TokenTypes type) {
         if (!token.isEmpty()) {
-            if (type == TokenTypes.word && token.equals("end")) type = TokenTypes.codeBlockEnd;
+            //
+            if (type == TokenTypes.word && token.equals("end"))
+                type = TokenTypes.codeBlockEnd;
+            //
             tokens.add(new Token(token, type));
             return true;
         }
@@ -69,7 +78,7 @@ public class Tokenizer {
                     }
                 }
             } else { // double comment
-                if (counter+2 >= inputLength) new Error("quan: Tokenizer: Double comment was not closed at the end");
+                if (counter+2 >= inputLength) new Log(LogTypes.error,"[Tokenizer]: Double comment was not closed at the end");
                 counter++;
                 while (counter < inputLength) {
                     counter++;
@@ -85,7 +94,7 @@ public class Tokenizer {
     }
     private String getSingleQuotes() { // delete comments
         if (input.charAt(counter) == '\'') {
-            if (counter+1 >= inputLength) new Error("quan: Tokenizer: Single quote was not closed at the end");
+            if (counter+1 >= inputLength) new Log(LogTypes.error,"[Tokenizer]: Single quote was not closed at the end");
 
             StringBuilder result = new StringBuilder();
             boolean openSingleComment = false;
@@ -101,13 +110,13 @@ public class Tokenizer {
                 }
                 counter++;
             }
-            if (openSingleComment) new Error("quan: Tokenizer: Single quote was not closed at the end");
+            if (openSingleComment) new Log(LogTypes.error,"[Tokenizer]: Single quote was not closed at the end");
         }
         return "";
     }
     private String getDoubleQuotes() { // delete comments
         if (input.charAt(counter) == '\"') {
-            if (counter+1 >= inputLength) new Error("quan: Tokenizer: Double quote was not closed at the end");
+            if (counter+1 >= inputLength) new Log(LogTypes.error,"[Tokenizer]: Double quote was not closed at the end");
 
             StringBuilder result = new StringBuilder();
             boolean openDoubleComment = false;
@@ -123,7 +132,7 @@ public class Tokenizer {
                 }
                 counter++;
             }
-            if (openDoubleComment) new Error("quan: Tokenizer: Double quote was not closed at the end");
+            if (openDoubleComment) new Log(LogTypes.error,"[Tokenizer]: Double quote was not closed at the end");
         }
         return "";
     }
@@ -197,7 +206,8 @@ public class Tokenizer {
             }
         }
 
-        if (!result.isEmpty()) counter+=2;
+        if (!result.isEmpty())
+            counter+=2;
         return result;
     }
     private String getLogicalOperator() {
@@ -216,7 +226,8 @@ public class Tokenizer {
             }
         }
 
-        if (!result.isEmpty()) counter+=2;
+        if (!result.isEmpty())
+            counter+=2;
         return result;
     }
 }

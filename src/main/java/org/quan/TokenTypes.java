@@ -5,11 +5,13 @@ public enum TokenTypes {
         word,
         number,
         floatNumber,
-        singleChar,
         endline,
     // quote
         singleQuote,
         doubleQuote,
+    // parameter
+        parameterBlockBegin,
+        parameterBlockEnd,
     // operator
         singleMathOperator,
         doubleMathOperator,

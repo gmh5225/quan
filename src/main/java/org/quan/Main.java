@@ -1,7 +1,18 @@
 package org.quan;
+
+import org.quan.log.Log;
+import org.quan.log.LogTypes;
+
 public class Main {
     public static void main(String[] args) {
-        Tokenizer tokenizer = new Tokenizer(File.getFileString("release/main.quan"));
+        if (args.length == 0)
+            new Log(LogTypes.warning,"[Main]: Launch parameters weren't passed", true);
+
+        String inputFileString = File.getFileString(args[0]);
+        if (inputFileString.trim().isEmpty())
+            new Log(LogTypes.warning,"[Main]: The uploaded file was empty", true);
+        //
+        Tokenizer tokenizer = new Tokenizer(inputFileString);
         StringBuilder result = new StringBuilder("quan: Tokenizer: Output: [");
         for (Token token : tokenizer.tokens) {
             result.append(token.word);

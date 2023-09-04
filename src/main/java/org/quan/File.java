@@ -1,4 +1,7 @@
 package org.quan;
+import org.quan.log.Log;
+import org.quan.log.LogTypes;
+
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,7 +18,7 @@ public class File {
             reader.close();
             return result.toString();
         } catch (IOException e) {
-            e.printStackTrace();
+            new Log(LogTypes.error,"[File]: Unable to read file \""+filePath+"\"");
             return "";
         }
     }
