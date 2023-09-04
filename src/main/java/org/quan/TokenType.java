@@ -1,5 +1,5 @@
 package org.quan;
-public enum TokenTypes {
+public enum TokenType {
 // Tokenizer types
     // basic
         word,
@@ -39,7 +39,11 @@ public enum TokenTypes {
         // block
             blockBegin,
             blockEnd,
+    //
+        varriableName,
+        parameterVarriableName,
+    //
+        returnValue
     // assignment
     // return
-    // parameter
 }

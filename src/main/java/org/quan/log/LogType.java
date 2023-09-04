@@ -1,5 +1,5 @@
 package org.quan.log;
-public enum LogTypes {
+public enum LogType {
     error,
     warning,
     info
