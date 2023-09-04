@@ -25,7 +25,7 @@ public class File {
     public static void stringToFile(String filePath, String content) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(content);
-            System.out.println("Content has been written to the file.");
+            new Log(LogType.info,"[File]: Content has been written to the file");
         } catch (IOException e) {
             e.printStackTrace();
         }

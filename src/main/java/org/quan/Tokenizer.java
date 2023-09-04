@@ -9,7 +9,7 @@ public class Tokenizer {
     String input;
     int inputLength;
     public Tokenizer(String input) {
-        System.out.println("quan: Tokenizer: Input: ["+input+"]");
+        new Log(LogType.info,"[Tokenizer]: Input: ["+input+"]");
         // read tokens
         this.input = input;
         this.inputLength = input.length();
@@ -54,7 +54,7 @@ public class Tokenizer {
             }
             //
         }
-        System.out.println("quan: Tokenizer: Tokens size: "+tokens.size());
+        new Log(LogType.info,"[Tokenizer]: Tokens size: "+tokens.size());
     }
     private boolean addToken(String token, TokenType type) {
         if (!token.isEmpty()) {

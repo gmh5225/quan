@@ -13,11 +13,11 @@ public class Main {
             new Log(LogType.warning,"[Main]: The uploaded file was empty", true);
         //
         Tokenizer tokenizer = new Tokenizer(inputFileString);
-        StringBuilder result = new StringBuilder("quan: Tokenizer: Output: [");
+        StringBuilder result = new StringBuilder("[Tokenizer]: Output: [");
         for (Token token : tokenizer.tokens) {
             result.append(token.word);
         }
-        System.out.println(result.append("]").toString());
+        new Log(LogType.info,result.append(']').toString());
         //
         Parser parser = new Parser(tokenizer.tokens);
     }

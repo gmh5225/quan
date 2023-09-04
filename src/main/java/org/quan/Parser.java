@@ -22,11 +22,12 @@ public class Parser {
         parseCodeBlock();
 
         // output
-        System.out.println("###");
+        StringBuilder output = new StringBuilder("[Parser]: Tokens: [\n");
         for (int i = 0; i < tokens.size(); i++) {
             Token token = tokens.get(i);
-            System.out.println(i+":"+token.type.toString()+": "+token.word);
+            output.append("    "+i+':').append(token.type.toString()).append(": ").append(token.word).append('\n');
         }
+        new Log(LogType.info,output.append(']').toString());
         //
     }
     public void parseProcedureAndFunctionBegin() {

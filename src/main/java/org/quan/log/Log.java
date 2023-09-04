@@ -1,13 +1,17 @@
 package org.quan.log;
 public class Log {
     public Log(LogType type, String message) {
-        System.err.println("[quan]["+type.toString()+"]: "+message);
-        if (type == LogType.error)
+        if (type == LogType.error) {
+            System.err.println("[quan]["+type.toString()+"]: "+message);
             System.exit(1);
+        } else
+            System.out.println("[quan]["+type.toString()+"]: "+message);
     }
     public Log(LogType type, String message, boolean strictExit) {
-        System.err.println("[quan]["+type.toString()+"]: "+message);
-        if (type == LogType.error || strictExit)
+        if (type == LogType.error || strictExit) {
+            System.err.println("[quan]["+type.toString()+"]: "+message);
             System.exit(1);
+        } else
+            System.out.println("[quan]["+type.toString()+"]: "+message);
     }
 }
